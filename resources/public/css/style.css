@@ -1,0 +1,25 @@
+body {
+padding-top: 60px;
+padding-bottom: 40px;
+}
+
+
+.right {
+    float:right;
+}
+
+.left {
+    float:left;
+}
+
+<style type="text/css">
+.clearfix {
+    *zoom: 1;
+}
+
+.clearfix:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
