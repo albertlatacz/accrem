@@ -2,7 +2,7 @@
 (defproject accrem build-number
   :description "FIXME: write this!"
   :dependencies [[org.clojure/clojure "1.4.0"]
-                 [congomongo "0.1.5-SNAPSHOT"]
+                 [congomongo "0.2.0"]
                  [clojib "11"]
                  [noir "1.2.1"]
                  ]
