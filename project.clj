@@ -1,6 +1,9 @@
 (def build-number (or (System/getenv "ACCREM_BUILD_NUMBER") "DEV-SNAPSHOT"))
 (defproject accrem build-number
-  :description "FIXME: write this!"
+  :description "Simple accounting practice client management website written in Clojure"
+  :url "https://github.com/albertlatacz/accrem"
+  :license {:name "Eclipse Public License"
+            :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [congomongo "0.2.0"]
                  [clojib "11"]
