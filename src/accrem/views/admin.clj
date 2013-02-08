@@ -7,7 +7,7 @@
         hiccup.form-helpers
         hiccup.page-helpers)
   (:require [accrem.models.user :as users]
-            [noir.validation :as vali]
+            [accrem.web :as web]
             [clojib.encrypt :as crypt]))
 
 
@@ -30,13 +30,13 @@
   (render-setup-page "Setup" (url-setup) setup))
 
 (defn valid-setup? [setup]
-  (vali/rule (vali/min-length? (:password setup) 6)
+  (web/validate-rule (web/rule-min-length? (:password setup) 6)
     [:password "password too short (at least 6 characters required)"])
 
-  (vali/rule (= (:password setup) (:password-repeat setup))
+  (web/validate-rule (= (:password setup) (:password-repeat setup))
     [:password-repeat "password and repeated password do not match"])
 
-  (not (vali/errors? :password :password-repeat )))
+  (not (web/validate-errors? :password :password-repeat )))
 
 
 (defn render-validate-and-save-setup [setup]

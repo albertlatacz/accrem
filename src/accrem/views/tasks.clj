@@ -1,5 +1,5 @@
 (ns accrem.views.tasks
-  (:require [noir.validation :as vali])
+  (:require [accrem.web :as web])
 
   (:use accrem.config
         accrem.views.common
@@ -13,13 +13,15 @@
 
 
 (defn valid-task? [task]
-  (vali/rule (vali/has-value? (:dueDate task))
+  (web/validate-rule
+    (web/rule-has-value? (:dueDate task))
     [:dueDate "Required field"])
 
-  (vali/rule (vali/has-value? (:title task))
+  (web/validate-rule
+    (web/rule-has-value? (:title task))
     [:title "Required field"])
 
-  (not (vali/errors? :dueDate :title )))
+  (not (web/validate-errors? :dueDate :title )))
 
 
 (defn render-task-links [task]

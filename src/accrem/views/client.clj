@@ -1,6 +1,5 @@
 (ns accrem.views.client
-  (:require [noir.response :as resp]
-            [noir.validation :as vali])
+  (:require [accrem.web :as web])
 
   (:use accrem.views.common
         noir.core
@@ -12,13 +11,15 @@
 
 
 (defn valid-client? [client]
-  (vali/rule (vali/has-value? (:accountId client))
+  (web/validate-rule
+    (web/rule-has-value? (:accountId client))
     [:accountId "Required field"])
 
-  (vali/rule (vali/has-value? (:accountName client))
+  (web/validate-rule
+    (web/rule-has-value? (:accountName client))
     [:accountName "Required field"])
 
-  (not (vali/errors? :accountId :accountName )))
+  (not (web/validate-errors? :accountId :accountName )))
 
 
 (defn render-client-name [client]

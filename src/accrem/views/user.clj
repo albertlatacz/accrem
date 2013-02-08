@@ -1,13 +1,11 @@
 (ns accrem.views.user
   (:require [clojib.encrypt :as crypt]
-            [noir.validation :as vali]
-            [noir.session :as session]
+            [accrem.web :as web]
             [clojure.string :as string])
 
   (:use accrem.models.user
         accrem.views.common
         noir.core
-        [noir.response :only [redirect]]
         hiccup.core
         hiccup.form-helpers
         hiccup.page-helpers))
@@ -16,31 +14,35 @@
   (assoc user :password (crypt/encrypt-password password)))
 
 (defn valid-user? [username]
-  (vali/rule (not (user-by-name username))
+  (web/validate-rule
+    (not (user-by-name username))
     [:username "That username is already taken"])
 
-  (vali/rule (vali/min-length? username 3)
+  (web/validate-rule
+    (web/rule-min-length? username 3)
     [:username "Username must be at least 3 characters."])
-  (not (vali/errors? :username :password )))
+  (not (web/validate-errors? :username :password )))
 
 (defn valid-psw? [password]
-  (vali/rule (vali/min-length? password 5)
+  (web/validate-rule
+    (web/rule-min-length? password 5)
     [:password "Password must be at least 5 characters."])
-  (not (vali/errors? :password )))
+
+  (not (web/validate-errors? :password )))
 
 
 (defn login! [user]
   (let [stored-pass (:password (user-by-name (:username user)))]
     (if (and stored-pass (crypt/passwords= (:password user) stored-pass))
       (do
-        (session/put! :admin (= "admin" (:username user)))
-        (session/put! :username (:username user)))
-      (vali/set-error :login-status "Invalid username or password"))))
+        (web/session-put! :admin (= "admin" (:username user)))
+        (web/session-put! :username (:username user)))
+      (web/validate-set-error :login-status "Invalid username or password"))))
 
 
 (defn render-validate-and-login [user]
   (if (login! user)
-    (redirect "/app/dashboard")
+    (web/redirect "/app/dashboard")
     (render "/login" user)))
 
 (defn render-login []
@@ -54,14 +56,14 @@
         [:div {}
          (field-text :username "Username" "")
          (field-password :password "Password" "")
-         (vali/on-error :login-status error-item)
+         (web/validate-on-error :login-status error-item)
          (submit-button {:class "btn btn-primary right"} "Login")
          ])]]))
 
 
 (defn render-logout []
-  (session/clear!)
-  (redirect "/"))
+  (web/session-clear!)
+  (web/redirect "/"))
 
 (defn add! [{:keys [username password] :as user}]
   (when (valid-user? username)
@@ -74,8 +76,8 @@
 
 (defn redirect->authentication []
   (when-not (logged-in?)
-    (redirect (url-login))))
+    (web/redirect (url-login))))
 
 (defn redirect->setup[]
   (when-not (initialised?)
-    (redirect (url-setup))))
+    (web/redirect (url-setup))))

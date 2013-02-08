@@ -1,7 +1,5 @@
 (ns accrem.views.common
-  (:require [noir.validation :as vali]
-            [noir.session :as session]
-            [noir.response :as response])
+  (:require [accrem.web :as web])
 
   (:use accrem.config
         accrem.date
@@ -94,14 +92,14 @@
 
 
 (defn admin? []
-  (session/get :admin ))
+  (web/session-get :admin ))
 
 
 (defn logged-in? []
-  (session/get :username ))
+  (web/session-get :username ))
 
 (defn me []
-  (session/get :username ))
+  (web/session-get :username ))
 
 (defn menu-navigation-link [link name active]
   (if (true? active)
@@ -155,11 +153,11 @@
   (alert-message text "info"))
 
 (defn redirect-with-message! [url message]
-  (session/flash-put! message)
-  (response/redirect url))
+  (web/session-flash-put! message)
+  (web/redirect url))
 
 (defn render-alert-message []
-  (let [message (session/flash-get)]
+  (let [message (web/session-flash-get)]
     (if (:alertType message)
       [:div [:div {:class (str "alert " "alert-" (:alertType message))}
              [:a {:class "close" :data-dismiss "alert" :href "#"} "×"]
@@ -255,7 +253,7 @@
    (label {:class "control-label"} (name fieldId) labelText)
    [:div {:class "controls"}
     content
-    (vali/on-error fieldId error-item)]])
+    (web/validate-on-error fieldId error-item)]])
 
 (defn field-hidden [fieldId value]
   (hidden-field (name fieldId) value))

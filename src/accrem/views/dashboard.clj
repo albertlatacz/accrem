@@ -7,10 +7,10 @@
         accrem.views.sections
 
         noir.core
-        [noir.response :only [redirect]]
         hiccup.core
         hiccup.form-helpers
-        hiccup.page-helpers))
+        hiccup.page-helpers)
+  (:require [accrem.web :as web]))
 
 (defn render-dashboard [request]
   (page-layout "All clients" :dashboard request
@@ -25,4 +25,4 @@
      ]))
 
 (defn render-redirect-to-dashboard []
-  (redirect "/app/dashboard"))
+  (web/redirect "/app/dashboard"))

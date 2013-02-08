@@ -1,4 +1,5 @@
-(defproject accrem "0.2.0-SNAPSHOT"
+(def build-number (or (System/getenv "ACCREM_BUILD_NUMBER") "DEV-SNAPSHOT"))
+(defproject accrem build-number
   :description "FIXME: write this!"
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [congomongo "0.1.5-SNAPSHOT"]

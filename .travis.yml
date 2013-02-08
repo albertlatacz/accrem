@@ -1,0 +1,9 @@
+language: clojure
+env:
+  global:
+    - secure: "AH9VuzwQweWXhj3G20RIJlLMVBGtuxwzjjan3/rHmSaivgPjXWYY3GUa0cEV\nSSEiGH1CxEZoKEu1daAkJREfawb+XICm9+CseaG/mpKCZzWmgwChVTXLwPuj\nI7+yQD12cOjHY1MJWR0xOXc52PqWfRe6y4wim7cX3heYEG1hY5s="
+    - ACCREM_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
+
+script:
+    - lein test
+    - ./bin/push.sh
