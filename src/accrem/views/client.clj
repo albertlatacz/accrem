@@ -2,12 +2,9 @@
   (:require [accrem.web :as web])
 
   (:use accrem.views.common
-        noir.core
         hiccup.core
         hiccup.form-helpers
-        hiccup.page-helpers
-        somnium.congomongo
-        [somnium.congomongo.config :only [*mongo-config*]]))
+        hiccup.page-helpers))
 
 
 (defn valid-client? [client]

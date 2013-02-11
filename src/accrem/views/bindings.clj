@@ -6,6 +6,7 @@
         accrem.views.company
         accrem.views.soletrader
         accrem.views.individual
+        accrem.views.tasks
         noir.core))
 
 ; companies
@@ -47,6 +48,7 @@
 (defpage [:get (url-delete-individual :id )] {:keys [id]}
   (render-delete-individual id))
 
+
 ; sole traders
 (defpage [:get (url-list-sole-traders :pageId )] {:keys [pageId]}
   (render-list-sole-traders pageId))
@@ -65,6 +67,28 @@
 
 (defpage [:get (url-delete-sole-trader :id )] {:keys [id]}
   (render-delete-sole-trader id))
+
+
+; tasks
+(defpage [:get (url-delete-client-task)] {:keys [taskId]}
+  (render-delete-task taskId))
+
+(defpage [:get (url-add-client-task)] {:keys [clientId]}
+  (render-add-client-task clientId))
+
+(defpage [:post (url-add-client-task)] {:as task}
+  (render-validate-and-add-client-task task))
+
+(defpage [:get (url-edit-client-task)] {:keys [taskId]}
+  (render-edit-client-task taskId))
+
+(defpage [:post (url-edit-client-task)] {:as task}
+  (render-validate-and-edit-client-task task))
+
+(defpage [:get (url-list-client-tasks)] {:keys [clientId pageId]}
+  (render-list-client-tasks clientId pageId))
+
+
 
 ; login
 (defpage [:get (url-login)] {:as user}

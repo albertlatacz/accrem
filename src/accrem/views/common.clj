@@ -3,7 +3,6 @@
 
   (:use accrem.config
         accrem.date
-        noir.core
         hiccup.core
         hiccup.form-helpers
         hiccup.page-helpers))
@@ -22,6 +21,7 @@
 (defn url-list-companies
   ([] (str "/app/companies/1"))
   ([page] (str "/app/companies/" page)))
+(defn url-company-action-completed [id action] (str "/app/company/" action "/" id "/completed/"))
 
 (defn url-add-individual [] "/app/individual/add")
 (defn url-edit-individual [id] (str "/app/individual/edit/" id))
@@ -214,7 +214,7 @@
      (include-js "/js/DT_bootstrap.js")
      ]
 
-    [:body ;(main-menu page)
+    [:body
      (main-menu page)
 
      [:div {:class "container"}

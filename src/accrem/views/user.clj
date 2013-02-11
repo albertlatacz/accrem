@@ -5,7 +5,6 @@
 
   (:use accrem.models.user
         accrem.views.common
-        noir.core
         hiccup.core
         hiccup.form-helpers
         hiccup.page-helpers))
@@ -39,12 +38,6 @@
         (web/session-put! :username (:username user)))
       (web/validate-set-error :login-status "Invalid username or password"))))
 
-
-(defn render-validate-and-login [user]
-  (if (login! user)
-    (web/redirect "/app/dashboard")
-    (render "/login" user)))
-
 (defn render-login []
   (page-layout "Welcome! Please login..." :login {}
     [:div {:class "row"}
@@ -59,6 +52,12 @@
          (web/validate-on-error :login-status error-item)
          (submit-button {:class "btn btn-primary right"} "Login")
          ])]]))
+
+
+(defn render-validate-and-login [user]
+  (if (login! user)
+    (web/redirect "/app/dashboard")
+    (render-login)))
 
 
 (defn render-logout []

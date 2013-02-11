@@ -1,15 +1,11 @@
 (ns accrem.views.individual
-  (use
-    noir.core
-    hiccup.core
-    hiccup.form-helpers
-    hiccup.page-helpers
-    accrem.models.client
-    accrem.views.common
-    accrem.views.client
-    accrem.views.sections
-    somnium.congomongo
-    [somnium.congomongo.config :only [*mongo-config*]]))
+  (:use hiccup.core
+        hiccup.form-helpers
+        hiccup.page-helpers
+        accrem.models.client
+        accrem.views.common
+        accrem.views.client
+        accrem.views.sections))
 
 (defn individual-fields [individual]
   [:div {:class "row"}

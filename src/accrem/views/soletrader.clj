@@ -3,7 +3,6 @@
         accrem.views.common
         accrem.views.client
         accrem.views.sections
-        noir.core
         hiccup.core
         hiccup.form-helpers
         hiccup.page-helpers))

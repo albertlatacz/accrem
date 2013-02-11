@@ -2,7 +2,6 @@
   (:use accrem.models.user
         accrem.views.common
         accrem.views.sections
-        noir.core
         hiccup.core
         hiccup.form-helpers
         hiccup.page-helpers)

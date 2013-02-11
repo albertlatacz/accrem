@@ -1,24 +1,24 @@
 (ns accrem.models.client
-  (:use accrem.storage))
+  (:require [accrem.storage :as storage]))
 
 (defn all-clients []
-  (fetch-all :clients ))
+  (storage/fetch-all :clients ))
 
 (defn client-by-id [id]
-  (fetch-by-id :clients id))
+  (storage/fetch-by-id :clients id))
 
 (defn clients-with-type [clientType]
-  (fetch-where :clients {:accountType clientType}))
+  (storage/fetch-where :clients {:accountType clientType}))
 
 (defn insert-client! [client]
-  (insert! :clients client))
+  (storage/insert! :clients client))
 
 (defn update-client! [client]
-  (update! :clients client))
+  (storage/update! :clients client))
 
 (defn delete-client! [client]
-  (delete! :clients client))
+  (storage/delete! :clients client))
 
 (defn delete-all-clients! []
-  (drop-collection! :clients ))
+  (storage/drop-collection! :clients ))
 

@@ -1,9 +1,9 @@
 (ns accrem.views.company
+  (:require [accrem.web :as web])
   (:use accrem.models.client
         accrem.views.client
         accrem.views.common
         accrem.views.sections
-        noir.core
         hiccup.core
         hiccup.form-helpers
         hiccup.page-helpers))
@@ -60,7 +60,8 @@
   (if (valid-client? client)
     (do
       (insert-client! client)
-      (redirect-with-message! (url-list-companies) (message-success "Company added!")))
+      (redirect-with-message! (url-list-companies) (message-success "Company added!"))
+      )
     (render-add-company client)))
 
 

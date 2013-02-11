@@ -5,8 +5,6 @@
         accrem.views.client
         accrem.views.tasks
         accrem.views.sections
-
-        noir.core
         hiccup.core
         hiccup.form-helpers
         hiccup.page-helpers)
@@ -20,9 +18,7 @@
       [:a {:href (url-add-individual) :class "btn btn-primary"} "Add individual"] "&nbsp;&nbsp;"
       [:a {:href (url-add-sole-trader) :class "btn btn-primary"} "Add sole trader"]
       ]
-     [:br ]
-     ;     (render-task-list (all-tasks) 4)
-     ]))
+     [:br ]]))
 
 (defn render-redirect-to-dashboard []
   (web/redirect "/app/dashboard"))

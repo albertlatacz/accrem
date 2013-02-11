@@ -6,11 +6,9 @@
         accrem.views.client
         accrem.models.tasks
         accrem.models.client
-        noir.core
         hiccup.core
         hiccup.form-helpers
         hiccup.page-helpers))
-
 
 (defn valid-task? [task]
   (web/validate-rule
@@ -48,9 +46,7 @@
     [:div {:class "modal-footer"}
      [:a {:href "#" :class "btn" :data-dismiss "modal"} "Cancel"]
      [:a {:href (url-delete-client-task (:_id task)) :class "btn btn-danger"} [:i {:class "icon-trash icon-white"}] " Delete"]]
-
-    ]]
-  )
+    ]])
 
 
 (defn render-task-row-with-actions [task]
@@ -137,7 +133,7 @@
        ])))
 
 
-(defpage [:get (url-list-client-tasks)] {:keys [clientId pageId]}
+(defn render-list-client-tasks [clientId pageId]
   (let [client (client-by-id clientId)
         page (if (empty? pageId) 1 (. Integer valueOf pageId))]
     (page-layout "Tasks" (:clientType client) {}
@@ -146,16 +142,13 @@
        [:a {:href (url-add-client-task clientId) :class "btn btn-primary right"} "Add"]
        [:br ]
        [:br ]
-       (render-task-list clientId (tasks-for-client clientId) page)]
-      )))
+       (render-task-list clientId (tasks-for-client clientId) page)])))
 
 
-
-(defpage [:get (url-add-client-task)] {:keys [clientId]}
+(defn render-add-client-task [clientId]
   (task-details-page "Add" "Add task" (url-add-client-task clientId) {:clientId clientId}))
 
-
-(defpage [:post (url-add-client-task)] {:as task}
+(defn render-validate-and-add-client-task [task]
   (if (valid-task? task)
     (do
       (insert-task! task)
@@ -163,20 +156,17 @@
     (task-details-page "Add" "Add task" (url-add-client-task (:clientId task)) task)))
 
 
-
-(defpage [:get (url-edit-client-task)] {:keys [taskId]}
+(defn render-edit-client-task [taskId]
   (task-details-page "Edit" "Save" (url-edit-client-task taskId) (task-by-id taskId)))
 
-(defpage [:post (url-edit-client-task)] {:as task}
+(defn render-validate-and-edit-client-task [task]
   (if (valid-task? task)
     (do
       (update-task! task)
       (task-action-completed-page task :saved ))
     (task-details-page "Edit" "Save" (url-edit-client-task (:clientId task)) task)))
 
-
-;TODO change to post
-(defpage [:get (url-delete-client-task)] {:keys [taskId]}
+(defn render-delete-task [taskId]
   (do
     (let [taskToDelete (task-by-id taskId)]
       (delete-task! taskToDelete)

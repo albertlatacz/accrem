@@ -1,31 +1,31 @@
 (ns accrem.models.user
-  (:require [clojib.encrypt :as crypt])
-  (:use accrem.storage))
+  (:require [accrem.storage :as storage]
+            [clojib.encrypt :as crypt]))
 
 (defn all-users []
-  (fetch-all :users))
+  (storage/fetch-all :users))
 
 (defn user-by-id [id]
-  (fetch-by-id :users id))
+  (storage/fetch-by-id :users id))
 
 (defn user-by-name [name]
   (first
-    (fetch-where :users {:username name})))
+    (storage/fetch-where :users {:username name})))
 
 (defn insert-user! [user]
-  (insert! :users user))
+  (storage/insert! :users user))
 
 (defn update-user! [user]
-  (update! :users user))
+  (storage/update! :users user))
 
 (defn delete-user! [user]
-  (delete! :users user))
+  (storage/delete! :users user))
 
 (defn delete-all-users! []
-  (drop-collection! :users))
+  (storage/drop-collection! :users))
 
 (defn initialised? []
-  (collection-exists? :users))
+  (storage/collection-exists? :users))
 
 (defn encrypt-user-password [{password :password :as user}]
   (assoc user :password (crypt/encrypt-password password)))
