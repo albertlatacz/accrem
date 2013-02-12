@@ -91,6 +91,11 @@
   )
 
 
+(defn dropdown-values [values]
+  {:values (map reverse values)
+   :value-of (fn[k] (k (into {} values)))
+   :key-of (fn[v] (ffirst (filter #(= (second %) v) values)))})
+
 (defn admin? []
   (web/session-get :admin ))
 

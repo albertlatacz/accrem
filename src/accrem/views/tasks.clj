@@ -10,6 +10,8 @@
         hiccup.form-helpers
         hiccup.page-helpers))
 
+(def task-status (dropdown-values [[:created "Created" ] [:in-progress "In Progress"] [:completed "Completed"]]))
+
 (defn valid-task? [task]
   (web/validate-rule
     (web/rule-has-value? (:dueDate task))
@@ -44,8 +46,9 @@
      ]
 
     [:div {:class "modal-footer"}
-     [:a {:href "#" :class "btn" :data-dismiss "modal"} "Cancel"]
-     [:a {:href (url-delete-client-task (:_id task)) :class "btn btn-danger"} [:i {:class "icon-trash icon-white"}] " Delete"]]
+     (form-to {} [:post (url-delete-client-task (:_id task))]
+       [:a {:href "#" :class "btn" :data-dismiss "modal"} "Cancel"]
+       (submit-button {:class "btn btn-danger right"} " Delete"))]
     ]])
 
 
@@ -53,7 +56,7 @@
   [:tr {}
    [:td (:dueDate task)]
    [:td (:title task)]
-   [:td (:status task)]
+   [:td ((task-status :value-of) (keyword (:status task)))]
    [:td {:width "150"} (render-task-links task)]]
   )
 
@@ -80,7 +83,7 @@
      (field-hidden :type detailsType)
      (field-date :dueDate "Due date" (:dueDate task))
      (field-text :title "Title" (:title task))
-     (field-dropdown :status "Status" '("Created" "In Progress" "Completed") (:status task))
+     (field-dropdown :status "Status" (task-status :values) (keyword (:status task)))
      (field-text-area :notes "Notes" (:notes task))
      ]))
 
@@ -121,7 +124,7 @@
          [:br ]
          [:p (str "Title: " (:title task))]
          [:p (str "Due date: " (:dueDate task))]
-         [:p (str "Status: " (:status task))]
+         [:p (str "Status: " ((task-status :value-of) (keyword (:status task))))]
          [:p (str "Notes: " (:notes task))]
          ]
         [:hr ]

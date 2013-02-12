@@ -46,11 +46,10 @@
      ]
 
     [:div {:class "modal-footer"}
-     [:a {:href "#" :class "btn" :data-dismiss "modal"} "Cancel"]
-     [:a {:href (url-delete-client client) :class "btn btn-danger"} [:i {:class "icon-trash icon-white"}] " Delete"]]
-
-    ]]
-  )
+     (form-to {} [:post (url-delete-client client)]
+       [:a {:href "#" :class "btn" :data-dismiss "modal"} "Cancel"]
+       (submit-button {:class "btn btn-danger right"} " Delete"))
+     ]]])
 
 
 (defn render-client-row [client]
@@ -92,6 +91,7 @@
        ])))
 
 
+(def account-association (dropdown-values [[:director "Director"] [:shareholder "Shareholder"] [:employee "Employee"]]))
 (defn render-associated-individual [individual association]
   (let [nodeId (str "associatedIndividualNode" (:_id individual))]
     [:tr {:id nodeId}
@@ -107,7 +107,7 @@
       "&nbsp;&nbsp;&nbsp;"
       [:div {:class "right" :style "margin:5px"}
        (hidden-field "associatedIndividualsIds[]" (:_id individual))
-       (drop-down {:class "span2"} "associatedIndividualsTypes[]" '("Director" "Shareholder" "Employee") association)
+       (drop-down {:class "span2"} "associatedIndividualsTypes[]" (account-association :values) (keyword association))
        ]
 
       ]]

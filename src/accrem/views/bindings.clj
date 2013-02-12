@@ -25,7 +25,7 @@
 (defpage [:post (url-edit-company :id )] {:as client}
   (render-validate-and-edit-company client))
 
-(defpage [:get (url-delete-company :id )] {:keys [id]}
+(defpage [:post (url-delete-company :id )] {:keys [id]}
   (render-delete-company id))
 
 
@@ -45,7 +45,7 @@
 (defpage [:post (url-edit-individual :id )] {:as client}
   (render-validate-and-edit-individual client))
 
-(defpage [:get (url-delete-individual :id )] {:keys [id]}
+(defpage [:post (url-delete-individual :id )] {:keys [id]}
   (render-delete-individual id))
 
 
@@ -65,14 +65,11 @@
 (defpage [:post (url-edit-sole-trader :id )] {:as client}
   (render-validate-and-edit-sole-trader client))
 
-(defpage [:get (url-delete-sole-trader :id )] {:keys [id]}
+(defpage [:post (url-delete-sole-trader :id )] {:keys [id]}
   (render-delete-sole-trader id))
 
 
 ; tasks
-(defpage [:get (url-delete-client-task)] {:keys [taskId]}
-  (render-delete-task taskId))
-
 (defpage [:get (url-add-client-task)] {:keys [clientId]}
   (render-add-client-task clientId))
 
@@ -87,6 +84,9 @@
 
 (defpage [:get (url-list-client-tasks)] {:keys [clientId pageId]}
   (render-list-client-tasks clientId pageId))
+
+(defpage [:post (url-delete-client-task)] {:keys [taskId]}
+  (render-delete-task taskId))
 
 
 

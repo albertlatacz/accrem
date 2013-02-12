@@ -6,6 +6,7 @@
         hiccup.form-helpers
         hiccup.page-helpers))
 
+(def boolean-dropdown (dropdown-values [[:yes "Yes"] [:no "No"]]))
 
 (defn account-details-section [accountType accountDetails]
   (page-section "Account details"
@@ -42,12 +43,13 @@
      ]))
 
 
+(def service-plan-frequency (dropdown-values [[:per-month "per month"] [:per-quarter "per quarter"] [:per-annum "per annum"]]))
 (defn service-plan-section [plan]
   (page-section "Service plan"
     [:div {}
      (field-text :servicePlanName "Service plan name" (:servicePlanName plan))
      (field-text :servicePlanCharge "Charge" (:servicePlanCharge plan))
-     (field-dropdown :servicePlanChargeFreq "" '("per month" "per quarter" "per annum") (:servicePlanChargeFreq plan))
+     (field-dropdown :servicePlanChargeFreq "" (service-plan-frequency :values) (keyword (:servicePlanChargeFreq plan)))
      (field-date :servicePlanStartedDate "Contract start date" (:servicePlanStartedDate plan))
      (field-date :servicePlanReviewDate "Contract review date" (:servicePlanReviewDate plan))
      ]))
@@ -85,7 +87,7 @@
 (defn self-assessment-section [selfAssessment]
   (page-section "Self Assessment"
     [:div {}
-     (field-dropdown :selfAssessment "Self Assessment" '("Yes" "No") (:selfAssessment selfAssessment))
+     (field-dropdown :selfAssessment "Self Assessment" (boolean-dropdown :values) (keyword (:selfAssessment selfAssessment)))
      (field-text :selfAssessmentLastReturn "Last return" (:selfAssessmentLastReturn selfAssessment))
      (field-date :selfAssessmentFilingDate "Filing date" (:selfAssessmentFilingDate selfAssessment))
      (field-text :selfAssessmentTaxDue "Tax due" (:selfAssessmentTaxDue selfAssessment))
@@ -130,18 +132,19 @@
     [:div {}
      (field-text :payrollAccountsOfficeRef "Accounts Office ref" (:payrollAccountsOfficeRef payroll))
      (field-text :payrollEmployerPayeRef "Employer PAYE ref" (:payrollEmployerPayeRef payroll))
-     (field-dropdown :payrollCISRegistered "CIS registered" '("Yes" "No") (:payrollCISRegistered payroll))
+     (field-dropdown :payrollCISRegistered "CIS registered" (boolean-dropdown :values) (keyword (:payrollCISRegistered payroll)))
      ]))
 
 
+(def vat-schedule (dropdown-values [[:janAprJulOct "January, April, July, October"] [:febMayAugNov "February, May, August, November"] [:marJunSepDec "March, June, September, December"]]))
 (defn vat-details-section [vatDetails]
   (page-section "VAT Details"
     [:div {}
-     (field-dropdown :vatDetailsRegistered "VAT registered" '("Yes" "No") (:vatDetailsRegistered vatDetails))
+     (field-dropdown :vatDetailsRegistered "VAT registered" (boolean-dropdown :values) (keyword (:vatDetailsRegistered vatDetails)))
      (field-text :vatDetailsNumber "VAT Number" (:vatDetailsNumber vatDetails))
      (field-date :vatDetailsRegistrationDate "Registration date" (:vatDetailsRegistrationDate vatDetails ""))
-     (field-dropdown :vatDetailsReturnsSchedule "Returns schedule" '("January, April, July, October" "February, May, August, November" "March, June, September, December") (:vatDetailsReturnsSchedule vatDetails))
-     (field-dropdown :vatDetailsLastFiledOnline "Last filed online" '("Yes" "No") (:vatDetailsLastFiledOnline vatDetails))
+     (field-dropdown :vatDetailsReturnsSchedule "Returns schedule" (vat-schedule :values) (keyword (:vatDetailsReturnsSchedule vatDetails)))
+     (field-dropdown :vatDetailsLastFiledOnline "Last filed online" (boolean-dropdown :values) (keyword (:vatDetailsLastFiledOnline vatDetails)))
      (field-date :vatDetailsLastReturnDate "Last return date" (:vatDetailsLastReturnDate vatDetails))
      ]))
 
