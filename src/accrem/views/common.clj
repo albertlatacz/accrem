@@ -30,7 +30,7 @@
   ([] (str "/app/individuals/1"))
   ([page] (str "/app/individuals/" page)))
 
-(defn url-add-sole-trader []"/app/soletrader/add")
+(defn url-add-sole-trader [] "/app/soletrader/add")
 (defn url-edit-sole-trader [id] (str "/app/soletrader/edit/" id))
 (defn url-delete-sole-trader [id] (str "/app/soletrader/delete/" id))
 (defn url-list-sole-traders
@@ -42,14 +42,14 @@
     :company (url-edit-company (:_id client))
     :individual (url-edit-individual (:_id client))
     :soletrader (url-edit-sole-trader (:_id client))
-  ))
+    ))
 
 (defn url-delete-client [client]
   (case (keyword (:accountType client))
     :company (url-delete-company (:_id client))
     :individual (url-delete-individual (:_id client))
     :soletrader (url-delete-sole-trader (:_id client))
-  ))
+    ))
 
 
 
@@ -93,8 +93,8 @@
 
 (defn dropdown-values [values]
   {:values (map reverse values)
-   :value-of (fn[k] (k (into {} values)))
-   :key-of (fn[v] (ffirst (filter #(= (second %) v) values)))})
+   :value-of (fn [k] ((into {} values) k))
+   :key-of (fn [v] (ffirst (filter #(= (second %) v) values)))})
 
 (defn admin? []
   (web/session-get :admin ))
@@ -178,9 +178,9 @@
     ))
 
 (defn render-paged-list [items page headerRenderer itemRenderer pageLinkRenderer]
-  (let [pagedTasks (zipmap (range 1 Double/POSITIVE_INFINITY) (partition-all 10 items))
-        currentPage (pagedTasks page)
-        numberOfPages (count pagedTasks)
+  (let [pagedItems (zipmap (range 1 Double/POSITIVE_INFINITY) (partition-all 10 items))
+        currentPage (pagedItems page)
+        numberOfPages (count pagedItems)
         canPageBack (not (= page 1))
         canPageForward (not (= page numberOfPages))
         previousPage (if canPageBack (- page 1) page)
@@ -197,12 +197,20 @@
          [:li {:class (when-not canPageBack "disabled")}
           [:a {:href (pageLinkRenderer previousPage)} "«"]]
 
-         (mapcat #(vector (render-paged-list-bar-link page % pageLinkRenderer)) (reverse pagedTasks))
+         (mapcat #(vector (render-paged-list-bar-link page % pageLinkRenderer)) (reverse pagedItems))
 
          [:li {:class (when-not canPageForward "disabled")}
           [:a {:href (pageLinkRenderer nextPage)} "»"]]
          ]])
      ]))
+
+
+(defn render-list [items headerRenderer itemRenderer]
+  [:div {}
+   [:table {:class "table table-striped table-bordered"}
+    [:thead (map-tag :th (headerRenderer))]
+    (mapcat #(vector (itemRenderer %)) items)]
+   ])
 
 (defn page-layout [title page request & content]
   (html5
@@ -219,8 +227,7 @@
      (include-js "/js/DT_bootstrap.js")
      ]
 
-    [:body
-     (main-menu page)
+    [:body (main-menu page)
 
      [:div {:class "container"}
       (render-alert-message)

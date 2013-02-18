@@ -10,6 +10,9 @@
 (defn tasks-for-client [clientId]
   (storage/fetch-where :tasks {:clientId clientId}))
 
+(defn tasks-due []
+  (all-tasks))
+
 (defn insert-task! [task]
   (storage/insert! :tasks task))
 

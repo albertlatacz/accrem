@@ -10,8 +10,7 @@
         hiccup.form-helpers
         hiccup.page-helpers))
 
-(def task-status (dropdown-values [[:created "Created" ] [:in-progress "In Progress"] [:completed "Completed"]]))
-
+(def task-status (dropdown-values [[:created "Created"] [:in-progress "In Progress"] [:completed "Completed"]]))
 (defn valid-task? [task]
   (web/validate-rule
     (web/rule-has-value? (:dueDate task))
@@ -56,7 +55,7 @@
   [:tr {}
    [:td (:dueDate task)]
    [:td (:title task)]
-   [:td ((task-status :value-of) (keyword (:status task)))]
+   [:td ((task-status :value-of ) (keyword (:status task)))]
    [:td {:width "150"} (render-task-links task)]]
   )
 
@@ -83,7 +82,7 @@
      (field-hidden :type detailsType)
      (field-date :dueDate "Due date" (:dueDate task))
      (field-text :title "Title" (:title task))
-     (field-dropdown :status "Status" (task-status :values) (keyword (:status task)))
+     (field-dropdown :status "Status" (task-status :values ) (keyword (:status task)))
      (field-text-area :notes "Notes" (:notes task))
      ]))
 
@@ -124,7 +123,7 @@
          [:br ]
          [:p (str "Title: " (:title task))]
          [:p (str "Due date: " (:dueDate task))]
-         [:p (str "Status: " ((task-status :value-of) (keyword (:status task))))]
+         [:p (str "Status: " ((task-status :value-of ) (keyword (:status task))))]
          [:p (str "Notes: " (:notes task))]
          ]
         [:hr ]
@@ -174,3 +173,21 @@
     (let [taskToDelete (task-by-id taskId)]
       (delete-task! taskToDelete)
       (task-action-completed-page taskToDelete :deleted ))))
+
+
+(defn render-list-tasks-due [tasks]
+  (render-list tasks
+    #(vector "Expiration Date" "Title" "Status")
+    #(render-task-row %)))
+
+
+
+(defn render-tasks-due []
+  (let [tasks-due (tasks-due)]
+    (page-layout "Tasks" :tasks {}
+      [:div {}
+       [:h3 "Tasks due"]
+;       [:a {:href (url-add-client-task clientId) :class "btn btn-primary right"} "Add"]
+       [:br ]
+       [:br ]
+       (render-list-tasks-due tasks-due)])))

@@ -105,7 +105,7 @@
   (render-redirect-to-dashboard))
 
 (defpage [:get (url-dashboard)] {:as request}
-  (render-dashboard request))
+  (render-tasks-due))
 
 ;setup
 (defpage [:get (url-setup)] {:as request}
